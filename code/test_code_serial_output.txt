@@ -1,0 +1,55 @@
+Starting...
+AT
+AT
+AT+CGPS=1,1
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+AT+CGPSINFO
+No GPS data available
+Module output string:
++CGPSINFO:,,,,,,,,
+
+
