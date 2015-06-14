@@ -1,4 +1,10 @@
+/*
 
+This code is currently configured for standalone mode 
+as I don't yet know what to do with the gps server, 
+username or password settings on the s-gps codes.
+
+*/
 
 int8_t answer;
 int onModulePin= 2;
