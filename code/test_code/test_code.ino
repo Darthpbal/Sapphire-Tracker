@@ -1,6 +1,6 @@
 /*
 
-This code is currently configured for standalone mode 
+    This code is currently configured for standalone mode 
 as I don't yet know what to do with the gps server, 
 username or password settings on the s-gps codes.
 
@@ -11,9 +11,17 @@ int onModulePin= 2;
 char gps_data[100];
 int counter;
 
+//these two pins will be used for physical indication for where the arduino is in it's code and whether or not the GPS string contains any actual data
+int badLight = 7;
+int goodLight = 9;
+
 void setup(){
 
   pinMode(onModulePin, OUTPUT);
+  pinMode(badLight, OUTPUT);
+  pinMode(goodLight, OUTPUT);
+  digitalWrite(badLight, LOW);
+  digitalWrite(goodLight, LOW);
   Serial.begin(115200);    
 
   Serial.println("Starting...");
@@ -29,6 +37,14 @@ void setup(){
     Serial.println("The code gets stuck here!!");
     while(1);
   }
+
+  // Indicate that the setup loop is finished.
+  digitalWrite(badLight, HIGH);
+  delay(1000);
+  digitalWrite(goodLight, HIGH);
+  digitalWrite(badLight, LOW);
+  delay(1000);
+  digitalWrite(goodLight, LOW);
 }
 
 
@@ -48,17 +64,23 @@ void loop(){
     gps_data[counter] = '\0';
     if(gps_data[0] == ',')
     {
+      digitalWrite(badLight, HIGH);
+      delay(750);
       Serial.println("No GPS data available");
       Serial.println("Module output string:");
       Serial.print("+CGPSINFO:");
       Serial.print(gps_data);
       Serial.println("");
+      digitalWrite(badLight, LOW);  
     }
     else
     {
+      digitalWrite(goodLight, HIGH);
+      delay(750);
       Serial.print("GPS data:");
       Serial.print(gps_data);  
       Serial.println("");
+      digitalWrite(goodLight, LOW);
     }       
 
   }
@@ -71,7 +93,6 @@ void loop(){
 }
 
 void power_on(){
-
   uint8_t answer=0;
 
   // checks if the module is started
@@ -86,7 +107,14 @@ void power_on(){
     // waits for an answer from the module
     while(answer == 0){    
       // Send AT every two seconds and wait for the answer
-      answer = sendATcommand("AT", "OK", 2000);    
+      answer = sendATcommand("AT", "OK", 2000);
+    digitalWrite(goodLight, HIGH);
+    delay(150);
+    digitalWrite(goodLight, LOW);
+    delay(150);
+    digitalWrite(goodLight, HIGH);
+    delay(150);
+    digitalWrite(goodLight, LOW);  
     }
   }
 
