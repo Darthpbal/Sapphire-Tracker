@@ -1,0 +1,70 @@
+Starting...
+AT
+AT+CREG?
+AT+CGSOCKCONT=1,"IP","fast.t-mobile.com"
+AT+CSOCKAUTH=1,1,"",""
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+
+
+
+
+8426
+HTTP data: method::get;a::1;b::2
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+
+
+
+
+2956
+HTTP data: method::get;a::1;b::2
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+
+
+
+
+2343
+HTTP data: method::get;a::1;b::2
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+
+
+
+
+2618
+HTTP data: method::get;a::1;b::2
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+
+
+
+
+44872
+HTTP data: method::get;a::1;b::2
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+
+
+
+
+4871
+HTTP data: method::get;a::1;b::2
+AT+CHTTPACT="test.libelium.com",80
+GET /test-get-post.php?a=1&b=2 HTTP/1.1
+Host: test.libelium.com
+Content-Length: 0
+

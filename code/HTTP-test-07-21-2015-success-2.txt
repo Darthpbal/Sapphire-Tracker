@@ -1,0 +1,231 @@
+Starting...
+AT
+AT+CREG?
+AT+CGSOCKCONT=1,"IP","fast.t-mobile.com"
+AT+CSOCKAUTH=1,1,"",""
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+14100
+HTTP data: 
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+8730
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+7799
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+120207
+http_status: 3
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+10117
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+11090
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+16780
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+120208
+http_status: 3
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+15903
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+
+12090
+HTTP data: 11b
+<html>
+<body>
+
+<br>
+<!-- <a href="http://gps.rubyride.co/test.php">Test Again</a> -->
+<a href="http://gps.rubyride.co/display_unique_log_entries.php">Read Latest Log Entries for Each Serial Number</a>
+<br><p>
+<a href="http://gps.rubyride.co/read_log.php">Read Log</a>
+</body>
+</html>
+0
+
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+120208
+http_status: 3
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+237ÿ
+ÿÿÿ58478
+http_status: 4
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+237ÿ
+ÿÿÿ38070
+http_status: 4
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?key=value&hello=world HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+
+
+

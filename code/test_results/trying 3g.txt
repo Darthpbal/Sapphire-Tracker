@@ -90,3 +90,15 @@ OK
 OK
 
 OK
+
++CREG: (0-2)
+
+OK
+
++CREG: (0-2)
+
+OK
+
++CREG: (0-2)
+
+OK
