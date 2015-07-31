@@ -23,14 +23,13 @@
  */
 
 //Change here your data
-const char pin_number[] = "****";
-const char apn[] = "*********";
-const char user_name[] = "*********";
-const char password[] = "*********";
+const char apn[] = "fast.t-mobile.com";
+const char user_name[] = "";
+const char password[] = "";
 
-char url[ ]="test.libelium.com";
+char url[ ]="gps.rubyride.co";
 int port= 80;
-char request[ ]="GET /test-get-post.php?a=1&b=2 HTTP/1.1\r\nHost: test.libelium.com\r\nContent-Length: 0\r\n\r\n";
+char request[ ]="GET /index.php?hello=world HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n";
 
 
 int8_t answer;
@@ -50,12 +49,6 @@ void setup(){
 
   Serial.println("Starting...");
   power_on();
-
-  delay(3000);
-
-  //sets the PIN code
-  sprintf(aux_str, "AT+CPIN=%s", pin_number);
-  sendATcommand(aux_str, "OK", 2000);
 
   delay(3000);
 

@@ -1,26 +1,4 @@
-/*
-*  This program is free software: you can redistribute it and/or modify
-*  it under the terms of the GNU General Public License as published by
-*  the Free Software Foundation, either version 3 of the License, or
-*  (at your option) any later version.
-*
-*  This program is distributed in the hope that it will be useful,
-*  but WITHOUT ANY WARRANTY; without even the implied warranty of
-*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-*  GNU General Public License for more details.
-*
-*  You should have received a copy of the GNU General Public License
-*  along with this program.  If not, see .
- 
-*  Copyright (C) 2012 Libelium Comunicaciones Distribuidas S.L.
-*  http://www.libelium.com
-*  Version 0.1
-*  Author: Alejandro Gállego
- 
-*
-*  Version 0.1
-*/
- 
+
  
 int led = 13;
 int onModulePin = 2;        // the pin to switch on the module (without press on button) 
@@ -31,13 +9,7 @@ char date[6],UTC_time[8];
 char speed_OG[6],altitude[6];
  
 int x,y;
- 
- 
-void switchModule(){
-    digitalWrite(onModulePin,HIGH);
-    delay(2000);
-    digitalWrite(onModulePin,LOW);
-}
+
  
 void setup(){
  
@@ -60,8 +32,37 @@ void loop(){
     delay(5000);
     Serial.println("AT+CGPSINFO"); // request GPS info
     Serial.flush();
- 
+    
+    // counter used for stepping through the data char
     x=0;
+
+    // Read GPS data and end on a 'K' when the character should be a comma following
+    readGpsData();
+ 
+    x=24;
+    y=0;
+    parseGpsOrErr();
+
+    // print longitude var
+    Serial.print("Lon var = ");
+    Serial.print(longitude);
+
+    // print longitude var
+    Serial.print("Lon var = ");
+    Serial.print(longitude);
+}
+
+
+// TUrns cookinghacks module on.
+void switchModule(){
+    digitalWrite(onModulePin,HIGH);
+    delay(2000);
+    digitalWrite(onModulePin,LOW);
+}
+
+
+//reads GPS data and stores it in char array
+void readGpsData(){
     do{
         do{
             digitalWrite(led,HIGH);  
@@ -72,9 +73,21 @@ void loop(){
         x++;                        
     }
     while(Serial.read()!='K');
- 
-    x=24;
-    y=0;
+}
+
+
+/*
+ * Parses the GPS string into seperate variables or returns an error.
+ * vars used:
+ *   latitude
+ *   longitude
+ *   date
+ *   UTC time
+ *   altitude
+ *   speed
+ *   knots
+ */
+void parseGpsOrErr(){
     if(data[x]!=','){
         Serial.print("Latitude: ");    //shows actual latitude
         do{
@@ -98,6 +111,8 @@ void loop(){
             x++; 
         }
         while(data[x]!=',');
+
+
         x++;
         Serial.print(" ");
         Serial.println(data[x]);    //west or east
@@ -151,5 +166,4 @@ void loop(){
     else{
         Serial.println("GPS information not available, please wait...");
     }   
- 
-}
+}  
