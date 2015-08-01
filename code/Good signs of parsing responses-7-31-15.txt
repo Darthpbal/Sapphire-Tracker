@@ -1,0 +1,147 @@
+��AT
+AT+CGPS=1,1
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__,__
+GPS information not available, please wait...
+Lon var = 
+Lon var = 
+AT+CGPSINFO
+Parsing...
+char at pos 24__3__
+GPS Data: 
+Latitude: 3325.615965 N
+Longitude: 11214.253203 W
+Date: 010815
+UTC time: 014239.0
+Altitude: 99.0 m
+Speed: 0,0 knots
+
+Lon var = 11214.2532033325.6159656
+Lon var = 11214.2532033325.6159656
+AT+CGPSINFO
+Parsing...
+char at pos 24__3__
+GPS Data: 
+Latitude: 3325.615341 N
+Longitude: 11214.250498 W
+Date: 010815
+UTC time: 014244.0
+Altitude: 99.0 m
+Speed: 0,0 knots
+
+Lon var = 11214.2504983325.6153416
+Lon var = 11214.2504983325.6153416
+AT+CGPSINFO
+Parsing...
+char at pos 24__3__
+GPS Data: 
+Latitude: 3325.615386 N
+Longitude: 11214.250307 W
+Date: 010815
+UTC time: 014249.0
+Altitude: 99.0 m
+Speed: 0,0 knots
+
+Lon var = 11214.2503073325.6153866
+Lon var = 11214.2503073325.6153866
+AT+CGPSINFO
+Parsing...
+char at pos 24__3__
+GPS Data: 
+Latitude: 3325.615379 N
+Longitude: 11214.250322 W
+Date: 010815
+UTC time: 014254.0
+Altitude: 99.0 m
+Speed: 0,0 knots
+
+Lon var = 11214.2503223325.6153796
+Lon var = 11214.2503223325.6153796
+AT+CGPSINFO
+Parsing...
+char at pos 24__3__
+GPS Data: 
+Latitude: 3325.615389 N
+Longitude: 11214.250317 W
+Date: 010815
+UTC time: 014259.0
+Altitude: 99.0 m
+Speed: 0,0 knots
+
+Lon var = 11214.2503173325.6153896
+Lon var = 11214.2503173325.6153896
+AT+CGPSINFO
+Parsing...
+char at pos 24__3__
+GPS Data: 
+Latitude: 3325.615396 N
+Longitude: 11214.250302 W
+Date: 010815
+UTC time: 014304.0
+Altitude: 99.0 m
+Speed: 0,0 knots
+
+Lon var = 11214.2503023325.6153966
+Lon var = 11214.2503023325.6153966
+AT+CGPSINFO
