@@ -1,0 +1,187 @@
+�AT
+AT+CREG?
+AT+CGSOCKCONT=1,"IP","fast.t-mobile.com"
+AT+CSOCKAUTH=1,1,"",""
+AT+CGPS=1,1
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__,__
+GPS information not available, please wait...
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.635940
+northSouth : N11214.2098423325.635940
+longitude : 11214.2098423325.635940
+eastWest : WN11214.2098423325.635940
+date : 010815WN11214.2098423325.635940
+UTC_time : 024429.0010815WN11214.2098423325.635940
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.635940&northSouth=N11214.2098423325.635940&longitude=11214.2098423325.635940&eastWest=WN11214.2098423325.635940&date=010815WN11214.2098423325.635940&UTC_time=024429.0010815WN11214.2098423325.635940&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.634743
+northSouth : N11214.2077253325.634743
+longitude : 11214.2077253325.634743
+eastWest : WN11214.2077253325.634743
+date : 010815WN11214.2077253325.634743
+UTC_time : 024437.0010815WN11214.2077253325.634743
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.634743&northSouth=N11214.2077253325.634743&longitude=11214.2077253325.634743&eastWest=WN11214.2077253325.634743&date=010815WN11214.2077253325.634743&UTC_time=024437.0010815WN11214.2077253325.634743&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.624278
+northSouth : N11214.1890873325.624278
+longitude : 11214.1890873325.624278
+eastWest : WN11214.1890873325.624278
+date : 010815WN11214.1890873325.624278
+UTC_time : 024542.0010815WN11214.1890873325.624278
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.624278&northSouth=N11214.1890873325.624278&longitude=11214.1890873325.624278&eastWest=WN11214.1890873325.624278&date=010815WN11214.1890873325.624278&UTC_time=024542.0010815WN11214.1890873325.624278&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.624162
+northSouth : N11214.1887653325.624162
+longitude : 11214.1887653325.624162
+eastWest : WN11214.1887653325.624162
+date : 010815WN11214.1887653325.624162
+UTC_time : 024549.0010815WN11214.1887653325.624162
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.624162&northSouth=N11214.1887653325.624162&longitude=11214.1887653325.624162&eastWest=WN11214.1887653325.624162&date=010815WN11214.1887653325.624162&UTC_time=024549.0010815WN11214.1887653325.624162&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.624446
+northSouth : N11214.1881413325.624446
+longitude : 11214.1881413325.624446
+eastWest : WN11214.1881413325.624446
+date : 010815WN11214.1881413325.624446
+UTC_time : 024654.0010815WN11214.1881413325.624446
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.624446&northSouth=N11214.1881413325.624446&longitude=11214.1881413325.624446&eastWest=WN11214.1881413325.624446&date=010815WN11214.1881413325.624446&UTC_time=024654.0010815WN11214.1881413325.624446&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Error, no answer
+latitude : 3325.624446
+northSouth : N11214.1881413325.624446
+longitude : 11214.1881413325.624446
+eastWest : WN11214.1881413325.624446
+date : 010815WN11214.1881413325.624446
+UTC_time : 024654.0010815WN11214.1881413325.624446
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.624446&northSouth=N11214.1881413325.624446&longitude=11214.1881413325.624446&eastWest=WN11214.1881413325.624446&date=010815WN11214.1881413325.624446&UTC_time=024654.0010815WN11214.1881413325.624446&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.624366
+northSouth : N11214.1877293325.624366
+longitude : 11214.1877293325.624366
+eastWest : WN11214.1877293325.624366
+date : 010815WN11214.1877293325.624366
+UTC_time : 024904.0010815WN11214.1877293325.624366
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+GET /index.php?latitude=3325.624366&northSouth=N11214.1877293325.624366&longitude=11214.1877293325.624366&eastWest=WN11214.1877293325.624366&date=010815WN11214.1877293325.624366&UTC_time=024904.0010815WN11214.1877293325.624366&altitude=&speed_OG=0,0 HTTP/1.1
+Host: gps.rubyride.co
+Content-Length: 0
+
+Transmitted
+AT+CGPSINFO
+Parsing...
+char at pos 0__3__
+Done Parsing...
+latitude : 3325.624388
+northSouth : N11214.1877193325.624388
+longitude : 11214.1877193325.624388
+eastWest : WN11214.1877193325.624388
+date : 010815WN11214.1877193325.624388
+UTC_time : 024912.0010815WN11214.1877193325.624388
+speed_OG : 0,0
+
+AT+CHTTPACT="gps.rubyride.co",80
+output
