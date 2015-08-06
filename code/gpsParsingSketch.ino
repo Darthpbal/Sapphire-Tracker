@@ -57,11 +57,11 @@ void loop(){
   if (answer == 1){
     readGpsData();
     parseGpsOrErr();
-    if (!gpsError){
+    if (gpsError){}
       displayVars();
-      sendRequest();
+      // sendRequest();
       Serial.println("Transmitted");
-    }
+    
   }
   else{
     Serial.println("Error, no answer from module/...");
@@ -70,47 +70,47 @@ void loop(){
 
 
 // Sends the request
-void sendRequest(){
-  sprintf(aux_str, "AT+CHTTPACT=\"%s\",%d", url, port);
-  answer = sendATcommand(aux_str, "+CHTTPACT: REQUEST", 60000);
+// void sendRequest(){
+//   sprintf(aux_str, "AT+CHTTPACT=\"%s\",%d", url, port);
+//   answer = sendATcommand(aux_str, "+CHTTPACT: REQUEST", 60000);
   
-  Serial.print("GET /index.php?");
+//   Serial.print("GET /index.php?");
 
-  Serial.print("latitude=");
-  Serial.print(latitude);
-  Serial.print("&");
+//   Serial.print("latitude=");
+//   Serial.print(latitude);
+//   Serial.print("&");
 
-  Serial.print("northSouth=");
-  Serial.print(northSouth);
-  Serial.print("&");
+//   Serial.print("northSouth=");
+//   Serial.print(northSouth);
+//   Serial.print("&");
   
-  Serial.print("longitude=");
-  Serial.print(longitude);
-  Serial.print("&");
+//   Serial.print("longitude=");
+//   Serial.print(longitude);
+//   Serial.print("&");
 
-  Serial.print("eastWest=");
-  Serial.print(eastWest);
-  Serial.print("&");
+//   Serial.print("eastWest=");
+//   Serial.print(eastWest);
+//   Serial.print("&");
   
-  Serial.print("date=");
-  Serial.print(date);
-  Serial.print("&");
+//   Serial.print("date=");
+//   Serial.print(date);
+//   Serial.print("&");
   
-  Serial.print("UTC_time=");
-  Serial.print(UTC_time);
-  Serial.print("&");
+//   Serial.print("UTC_time=");
+//   Serial.print(UTC_time);
+//   Serial.print("&");
   
-  Serial.print("altitude=");
-  Serial.print(altitude);
-  Serial.print("&");
+//   Serial.print("altitude=");
+//   Serial.print(altitude);
+//   Serial.print("&");
   
-  Serial.print("speedInKnots=");
-  Serial.print(speedInKnots);
-  Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
+//   Serial.print("speedInKnots=");
+//   Serial.print(speedInKnots);
+//   Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
 
-  // Sends <Ctrl+Z>
-  Serial.write(0x1A);
-}
+//   // Sends <Ctrl+Z>
+//   Serial.write(0x1A);
+// }
 
 
 // TUrns cookinghacks module on.
@@ -244,10 +244,8 @@ void parseGpsOrErr(){
            x++;        
        }
        while(gps_data[x]!=0x0D);
-       Serial.println("Done Parsing...");
     }
     else{
-        Serial.println("GPS information not available, please wait...");
         gpsError = true;
     }   
 }

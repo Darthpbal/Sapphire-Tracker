@@ -29,7 +29,8 @@ void setup(){
     pinMode(onModulePin, OUTPUT);
     switchModule();                    // switches the module ON
     delay(5000);
- 
+    
+    // Establishes a usable wireless connection
     while( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) ||
       sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
 
