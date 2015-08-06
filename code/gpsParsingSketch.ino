@@ -1,15 +1,14 @@
-int counter;
-int x,y;
+int x,y,counter;
 int led = 13;
 int onModulePin = 2;        // the pin to switch on the module (without press on button) 
 int8_t answer;
  
-char data[255];
-char latitude[11],longitude[12];
-char northSouth[1], eastWest[1];
-char date[6],UTC_time[8];
-char speed_OG[6],altitude[6];
-char gps_data[100];
+// 
+char data[255],gps_data[100];
+
+// GPS string data listed here in the order it appears in the output of the SIM5218, each var delimited by a ","
+char latitude[11]northSouth[1],longitude[12],eastWest[1],date[6],UTC_time[8],altitude[6],speedInKnots[6];
+
 
 const char apn[] = "fast.t-mobile.com";
 const char user_name[] = "";
@@ -50,26 +49,23 @@ void setup(){
  
 void loop(){
   int gpsError = false;
- 
-    delay(5000);
-    // Serial.println("AT+CGPSINFO"); // request GPS info
-    // Serial.flush(); // wait to finish the outgoing data before moving forward
-    answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
+  delay(5000);
+  // Serial.println("AT+CGPSINFO"); // request GPS info
+  // Serial.flush(); // wait to finish the outgoing data before moving forward
+  answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
 
-    if (answer == 1){
-      readGpsData();
-      parseGpsOrErr();
-      if (!gpsError)
-      {
-        displayVars();
-        sendRequest();
-        Serial.println("Transmitted");
-      }
+  if (answer == 1){
+    readGpsData();
+    parseGpsOrErr();
+    if (!gpsError){
+      displayVars();
+      sendRequest();
+      Serial.println("Transmitted");
     }
-    else{
-      Serial.println("Error, no answer from module/...");
-    }
-
+  }
+  else{
+    Serial.println("Error, no answer from module/...");
+  }
 }
 
 
@@ -108,8 +104,8 @@ void sendRequest(){
   Serial.print(altitude);
   Serial.print("&");
   
-  Serial.print("speed_OG=");
-  Serial.print(speed_OG);
+  Serial.print("speedInKnots=");
+  Serial.print(speedInKnots);
   Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
 
   // Sends <Ctrl+Z>
@@ -147,17 +143,15 @@ void switchModule(){
 //reads GPS data and stores it in char array
 // parse gps must come after
 void readGpsData(){
-    
-        counter = 0;
-        do{
-          while(Serial.available() == 0);
-          gps_data[counter] = Serial.read();
-          counter++;
-        }
-        while(gps_data[counter - 1] != '\r');
-        gps_data[counter] = '\0';
-        Serial.println("Parsing...");
-        
+  counter = 0;
+  do{
+    while(Serial.available() == 0);
+    gps_data[counter] = Serial.read();
+    counter++;
+  }
+  while(gps_data[counter - 1] != '\r');
+  gps_data[counter] = '\0';
+  Serial.println("Parsing...");
 }
 
 
@@ -244,7 +238,7 @@ void parseGpsOrErr(){
        y=0;
        // store speed
        do{
-           speed_OG[y]=gps_data[x];
+           speedInKnots[y]=gps_data[x];
            // Serial.print(gps_data[x]);
            y++;
            x++;        
@@ -279,17 +273,15 @@ void displayVars(){
   Serial.print("UTC_time : ");
   Serial.println(UTC_time);
   
-  Serial.print("speed_OG : ");
-  Serial.println(speed_OG);
+  Serial.print("speedInKnots : ");
+  Serial.println(speedInKnots);
   
   Serial.println("");
 }  
 
 
-// Sends an AT commands and waits for a response with a timeout
-int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout)
-{
-
+// Sends an AT commands to the SIM5218 and waits for a response with a timeout
+int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout){
   uint8_t x=0,  answer=0;
   char response[100];
   unsigned long previous;
@@ -331,7 +323,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
  * char latitude[11],longitude[12];
  * char northSouth[1], eastWest[1];
  * char date[6],UTC_time[8];
- * char speed_OG[6],altitude[6];
+ * char speedInKnots[6],altitude[6];
  * char data[100];
  * 
  * int counter,x,y;
@@ -445,7 +437,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
  * y=0;
  *  // store speed
  * do{
- * speed_OG[y]=data[x];
+ * speedInKnots[y]=data[x];
  *  // Serial.print(data[x]);
  * y++;
  * x++;        
@@ -479,7 +471,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
  * Serial.print("UTC_time : ");
  * Serial.println(UTC_time);
  * 
- * Serial.print("speed_OG : ");
- * Serial.println(speed_OG);
+ * Serial.print("speedInKnots : ");
+ * Serial.println(speedInKnots);
  * }
  */
