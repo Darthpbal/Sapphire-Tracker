@@ -1,4 +1,5 @@
-int x,y,counter;
+// GPS Data:3325.569166,N,11214.238544,W,010815,013155.0,99.5,0,0
+int x,y,counter,gpsError;
 int led = 13;
 int onModulePin = 2;        // the pin to switch on the module (without press on button) 
 int8_t answer;
@@ -7,7 +8,7 @@ int8_t answer;
 char data[255],gps_data[100];
 
 // GPS string data listed here in the order it appears in the output of the SIM5218, each var delimited by a ","
-char latitude[11]northSouth[1],longitude[12],eastWest[1],date[6],UTC_time[8],altitude[6],speedInKnots[6];
+char latitude[11],northSouth[1],longitude[12],eastWest[1],date[6],UTC_time[8],altitude[6],speedInKnots[6];
 
 
 const char apn[] = "fast.t-mobile.com";
@@ -48,7 +49,7 @@ void setup(){
 }
  
 void loop(){
-  int gpsError = false;
+  gpsError = false;
   delay(5000);
   // Serial.println("AT+CGPSINFO"); // request GPS info
   // Serial.flush(); // wait to finish the outgoing data before moving forward
@@ -68,50 +69,50 @@ void loop(){
   }
 }
 
-
-// Sends the request
-// void sendRequest(){
-//   sprintf(aux_str, "AT+CHTTPACT=\"%s\",%d", url, port);
-//   answer = sendATcommand(aux_str, "+CHTTPACT: REQUEST", 60000);
-  
-//   Serial.print("GET /index.php?");
-
-//   Serial.print("latitude=");
-//   Serial.print(latitude);
-//   Serial.print("&");
-
-//   Serial.print("northSouth=");
-//   Serial.print(northSouth);
-//   Serial.print("&");
-  
-//   Serial.print("longitude=");
-//   Serial.print(longitude);
-//   Serial.print("&");
-
-//   Serial.print("eastWest=");
-//   Serial.print(eastWest);
-//   Serial.print("&");
-  
-//   Serial.print("date=");
-//   Serial.print(date);
-//   Serial.print("&");
-  
-//   Serial.print("UTC_time=");
-//   Serial.print(UTC_time);
-//   Serial.print("&");
-  
-//   Serial.print("altitude=");
-//   Serial.print(altitude);
-//   Serial.print("&");
-  
-//   Serial.print("speedInKnots=");
-//   Serial.print(speedInKnots);
-//   Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
-
-//   // Sends <Ctrl+Z>
-//   Serial.write(0x1A);
-// }
-
+/*
+ * // Sends the request
+ * // void sendRequest(){
+ * //   sprintf(aux_str, "AT+CHTTPACT=\"%s\",%d", url, port);
+ * //   answer = sendATcommand(aux_str, "+CHTTPACT: REQUEST", 60000);
+ *   
+ * //   Serial.print("GET /index.php?");
+ * 
+ * //   Serial.print("latitude=");
+ * //   Serial.print(latitude);
+ * //   Serial.print("&");
+ * 
+ * //   Serial.print("northSouth=");
+ * //   Serial.print(northSouth);
+ * //   Serial.print("&");
+ *   
+ * //   Serial.print("longitude=");
+ * //   Serial.print(longitude);
+ * //   Serial.print("&");
+ * 
+ * //   Serial.print("eastWest=");
+ * //   Serial.print(eastWest);
+ * //   Serial.print("&");
+ *   
+ * //   Serial.print("date=");
+ * //   Serial.print(date);
+ * //   Serial.print("&");
+ *   
+ * //   Serial.print("UTC_time=");
+ * //   Serial.print(UTC_time);
+ * //   Serial.print("&");
+ *   
+ * //   Serial.print("altitude=");
+ * //   Serial.print(altitude);
+ * //   Serial.print("&");
+ *   
+ * //   Serial.print("speedInKnots=");
+ * //   Serial.print(speedInKnots);
+ * //   Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
+ * 
+ * //   // Sends <Ctrl+Z>
+ * //   Serial.write(0x1A);
+ * // }
+*/
 
 // TUrns cookinghacks module on.
 void switchModule(){
@@ -317,159 +318,141 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
 
 
 
-/* this is the just trying stuff sketch
- * char latitude[11],longitude[12];
- * char northSouth[1], eastWest[1];
- * char date[6],UTC_time[8];
- * char speedInKnots[6],altitude[6];
- * char data[100];
- * 
- * int counter,x,y;
- * 
- * void setup() {
- * Serial.begin(9600);
- * Serial.println("Started up...");
- * 
- * }
- * 
- * void loop() {
- * Serial.println("Starting loop...");
- * counter = 0;
- * do{
- * while(Serial.available() == 0);
- * data[counter] = Serial.read();
- * counter++;
- * }
- * while(data[counter - 1] != '\r');
- * data[counter] = '\0';
- * Serial.println("received data:");
- * Serial.print(data);
- * Serial.println("");
- * Serial.println("Parsing...");
- * parseGpsOrErr();
- *  //displayVars();
- * }
- * 
- * 
- * 
- * 
- * 
- *  /*
- *  * Parses the GPS string into seperate variables or returns an error.
- *  * This must come right after read gps data function
- *  * vars used:
- *  *   latitude
- *  *   longitude
- *  *   date
- *  *   UTC time
- *  *   altitude
- *  *   speed
- *  *   knots
- *  * /
- * void parseGpsOrErr(){
- * x=0;
- * y=0;
- * Serial.print("char at pos 0__");
- * Serial.print(data[x]);
- * Serial.println("__");
- * if(data[x]!=','){
- *  // stores latitude
- * do{
- * latitude[y]=data[x];
- * y++;
- * x++;        
- * }
- * while(data[x]!=',');
- * x++;
- * 
- *  // stores northSouth direction
- * y=0;
- * northSouth[y] = data[x];
- * 
- * x+=2;
- * y=0;
- *  // stores longitude
- * do{
- * longitude[y]=data[x];
- * y++;
- * x++; 
- * }
- * while(data[x]!=',');
- * 
- * 
- * x++;
- * 
- *  // stores eastWest direction
- * y=0;
- * eastWest[y] = data[x];
- * 
- * x+=2;
- * y=0;
- *  //stores the date
- * do{
- * date[y]=data[x];
- * y++;
- * x++;        
- * }
- * while(data[x]!=',');
- * x++;
- * 
- * y=0;
- *  //stores TC time
- * do{
- * UTC_time[y]=data[x];
- * y++;
- * x++;        
- * }
- * while(data[x]!=',');
- * x++;
- * 
- * y=0;
- *  // stores altitude
- * do{
- * x++;        
- * }
- * while(data[x]!=',');
- * x++; 
- * 
- * y=0;
- *  // store speed
- * do{
- * speedInKnots[y]=data[x];
- *  // Serial.print(data[x]);
- * y++;
- * x++;        
- * }
- * while(data[x]!=0x0D);
- * Serial.println("Done Parsing...");
- * }
- * else{
- * Serial.println("GPS information not available, please wait...");
- * }   
- * }  
- * 
- * 
- * 
- * void displayVars(){
- * Serial.print("latitude : ");
- * Serial.println(latitude);
- * 
- * Serial.print("northSouth : ");
- * Serial.println(northSouth);
- * 
- * Serial.print("longitude : ");
- * Serial.println(longitude);
- * 
- * Serial.print("eastWest : ");
- * Serial.println(eastWest);
- * 
- * Serial.print("date : ");
- * Serial.println(date);
- * 
- * Serial.print("UTC_time : ");
- * Serial.println(UTC_time);
- * 
- * Serial.print("speedInKnots : ");
- * Serial.println(speedInKnots);
- * }
+//this is the just trying stuff sketch
+char latitude[11],longitude[12];
+char northSouth[1], eastWest[1];
+char date[6],UTC_time[8];
+char speedInKnots[6],altitude[6];
+char data[100]; 
+int counter,x,y; 
+
+void setup() {
+  Serial.begin(9600);
+  Serial.println("Started up..."); 
+} 
+
+void loop() {
+  Serial.println("Starting loop...");
+  counter = 0;
+  do{
+    while(Serial.available() == 0);
+    data[counter] = Serial.read();
+    counter++;
+  }
+  while(data[counter - 1] != '\r');
+  data[counter] = '\0';
+  Serial.println("received data:");
+  Serial.print(data);
+  Serial.println("");
+  Serial.println("Parsing...");
+  parseGpsOrErr();
+  //displayVars();
+}  
+
+
+/*
+ * Parses the GPS string into seperate variables or returns an error.
+ * This must come right after read gps data function
+ * vars used:
+ *   latitude
+ *   longitude
+ *   date
+ *   UTC time
+ *   altitude
+ *   speed
+ *   knots
  */
+void parseGpsOrErr(){
+  x=0;
+  y=0;
+  Serial.print("char at pos 0__");
+  Serial.print(data[x]);
+  Serial.println("__");
+  if(data[x]!=','){
+    // stores latitude
+    do{
+      latitude[y]=data[x];
+      y++;
+      x++;        
+    }
+    while(data[x]!=',');
+    x++; 
+    // stores northSouth direction
+    y=0;
+    northSouth[y] = data[x]; 
+    x+=2;
+    y=0;
+    // stores longitude
+    do{
+      longitude[y]=data[x];
+      y++;
+      x++; 
+    }
+    while(data[x]!=',');  
+    x++; 
+    // stores eastWest direction
+    y=0;
+    eastWest[y] = data[x]; 
+    x+=2;
+    y=0;
+    //stores the date
+    do{
+      date[y]=data[x];
+      y++;
+      x++;        
+    }
+    while(data[x]!=',');
+    x++; 
+    y=0;
+    //stores TC time
+    do{
+      UTC_time[y]=data[x];
+      y++;
+      x++;        
+    }
+    while(data[x]!=',');
+    x++; 
+    y=0;
+    // stores altitude
+    do{
+      x++;        
+    }
+    while(data[x]!=',');
+    x++;  
+    y=0;
+    // store speed
+    do{
+      speedInKnots[y]=data[x];
+      // Serial.print(data[x]);
+      y++;
+      x++;        
+    }
+    while(data[x]!=0x0D);
+    Serial.println("Done Parsing...");
+  }
+  else{
+    Serial.println("GPS information not available, please wait...");
+  }   
+}    
+
+
+/*
+ * Print GPS variables to the serial COM
+ */
+void displayVars(){
+  Serial.print("latitude : ");
+  Serial.println(latitude); 
+  Serial.print("northSouth : ");
+  Serial.println(northSouth); 
+  Serial.print("longitude : ");
+  Serial.println(longitude); 
+  Serial.print("eastWest : ");
+  Serial.println(eastWest); 
+  Serial.print("date : ");
+  Serial.println(date); 
+  Serial.print("UTC_time : ");
+  Serial.println(UTC_time); 
+  Serial.print("speedInKnots : ");
+  Serial.println(speedInKnots);
+}
+ 
