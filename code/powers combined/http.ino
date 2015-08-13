@@ -265,7 +265,6 @@ void power_on(){
       answer = sendATcommand("AT", "OK", 2000);
     }
   }
-
 }
 
 
