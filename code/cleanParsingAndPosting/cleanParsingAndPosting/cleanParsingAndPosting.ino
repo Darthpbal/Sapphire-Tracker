@@ -8,6 +8,8 @@ char* UTC_time;
 char* speedInKnots;
 char* altitude;
 
+bool gpsError;
+
 
 int answer;
 
@@ -34,11 +36,12 @@ void setup() {
 } 
 
 void loop() {
+  gpsError = false;
   delay(5000);
   answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
 
   if (answer == 1){
-    bool gpsError = readGpsData();
+    readGpsData();
     if(!gpsError) transmit();
   }
   else{
@@ -79,7 +82,7 @@ void switchModule(){
 
 //reads GPS data and stores it in char array
 // parse gps must come after
-bool readGpsData(){
+void readGpsData(){
   char gpsData[60]; 
   int counter = 0;
   counter = 0;
@@ -90,8 +93,55 @@ bool readGpsData(){
   }
   while(gpsData[counter - 1] != '\r');
   gpsData[counter] = '\0';
-  return parseGpsOrErr(gpsData);
+  parseGpsOrErr(gpsData);
 }
+
+
+void sendRequest(){
+  answer = sendATcommand("AT+CHTTPACT=gps.rubyride.co,80", "+CHTTPACT: REQUEST", 60000);
+
+  // Sends the request
+  // Serial.println(request);
+
+  //  char request[ ]="GET /index.php?a=1&b=2 HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n";
+  Serial.print("GET /index.php?");
+
+  Serial.print("latitude=");
+  Serial.print(latitude);
+  Serial.print("&");
+
+  Serial.print("northSouth=");
+  Serial.print(northSouth);
+  Serial.print("&");
+  
+  Serial.print("longitude=");
+  Serial.print(longitude);
+  Serial.print("&");
+
+  Serial.print("eastWest=");
+  Serial.print(eastWest);
+  Serial.print("&");
+  
+  Serial.print("date=");
+  Serial.print(date);
+  Serial.print("&");
+  
+  Serial.print("UTC_time=");
+  Serial.print(UTC_time);
+  Serial.print("&");
+  
+  Serial.print("altitude=");
+  Serial.print(altitude);
+  Serial.print("&");
+  
+  Serial.print("speed_OG=");
+  Serial.print(speed_OG);
+  Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
+
+  // Sends <Ctrl+Z>
+  Serial.write(0x1A);
+}
+
 
 
 /*
@@ -106,7 +156,7 @@ bool readGpsData(){
  *   speed
  *   knots
  */
-bool parseGpsOrErr(char* gpsData){
+void parseGpsOrErr(char* gpsData){
   if(gpsData[0]!=','){ // Checks if there's data in the GPS string yet.
     latitude = strtok(gpsData,",");
     northSouth = strtok(NULL, ",");
@@ -116,11 +166,12 @@ bool parseGpsOrErr(char* gpsData){
     UTC_time = strtok(NULL, ",");
     altitude = strtok(NULL, ",");
     speedInKnots = strtok(NULL, ",");
-    return false; // return error false
+    // return false; // return error false
  }
  else{
   Serial.println("gpsDataErr");
-   return true;  // return error true
+  gpsError = true;
+   // return true;  // return error true
  }
 }    
 
