@@ -1,4 +1,3 @@
-
 char* latitude;
 char* longitude;
 char* northSouth;
@@ -17,23 +16,12 @@ int answer;
 void setup() {
   // Serial.println(availableMemory());
   Serial.begin(115200);                // UART baud rate
-  Serial.println("init..."); 
-  delay(2000);  
+  Serial.println("init...");   
 
-  switchModule();                    // switches the module ON
+  switchModulePower();                    // switches the module ON
   delay(3000);
-
-  answer = sendATcommand("AT+CGPS=1,1","OK",1000);    
-  if (answer == 0)
-    {
-        do{
-          Serial.println("gpsInitErr, reswitch...");
-          switchModule();
-          answer = sendATcommand("AT+CGPS=1,1","OK",1000);
-        }
-        while(answer == 0);
-    }
 } 
+
 
 void loop() {
   gpsError = false;
@@ -41,8 +29,12 @@ void loop() {
   answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
 
   if (answer == 1){
-    readGpsData();
+    char dataString = readGpsData();
+    parseGpsOrErr(gpsData);
+    // prints GPS data to serial
     if(!gpsError) transmit();
+    // sends GPS data to server
+    // if(!gpsError) sendRequest();
   }
   else{
     Serial.println("module err");
@@ -51,16 +43,15 @@ void loop() {
 
 
 
+
 // Turns cookinghacks module on.
-void switchModule(){
+void switchModulePower(){
     int onModulePin = 2;        // the pin to switch on the module (without press on button) 
     pinMode(onModulePin, OUTPUT);
 
     digitalWrite(onModulePin,HIGH);
     delay(2000);
     digitalWrite(onModulePin,LOW);
-
-    uint8_t answer=0;
 
     // checks if the module is started
     answer = sendATcommand("AT", "OK", 2000);
@@ -80,20 +71,28 @@ void switchModule(){
 }
 
 
-//reads GPS data and stores it in char array
-// parse gps must come after
-void readGpsData(){
-  char gpsData[60]; 
-  int counter = 0;
-  counter = 0;
-  do{
-    while(Serial.available() == 0);
-    gpsData[counter] = Serial.read();
-    counter++;
-  }
-  while(gpsData[counter - 1] != '\r');
-  gpsData[counter] = '\0';
-  parseGpsOrErr(gpsData);
+void config(){
+  // start up the GPS system
+  answer = sendATcommand("AT+CGPS=1,1","OK",1000);    
+  if (answer == 0)
+    {
+        // This error check is usually only needed if the module is off at this point
+        do{
+          Serial.println("gpsInitErr, reswitch...");
+          switchModulePower();
+          answer = sendATcommand("AT+CGPS=1,1","OK",1000);
+        }
+        while(answer == 0);
+    }
+
+  // set up the wireless network
+  while( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) || sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
+  
+  // Set APN and IP PDP context
+  sendATcommand("AT+CGSOCKCONT=1,\"IP\",\"fast.t-mobile.com\"", "OK", 2000);
+
+  // Set APN username and password
+  sendATcommand("AT+CSOCKAUTH=1,1,\"\",\"\"", "OK", 2000);
 }
 
 
@@ -143,6 +142,22 @@ void sendRequest(){
 }
 
 
+//reads GPS data and stores it in char array
+// parse gps must come after
+char readGpsData(){
+  char gpsData[60]; 
+  int counter = 0;
+  counter = 0;
+  do{
+    while(Serial.available() == 0);
+    gpsData[counter] = Serial.read();
+    counter++;
+  }
+  while(gpsData[counter - 1] != '\r');
+  gpsData[counter] = '\0';
+  return gpsData;
+}
+
 
 /*
  * Parses the GPS string into seperate variables or returns an error.
@@ -167,17 +182,17 @@ void parseGpsOrErr(char* gpsData){
     altitude = strtok(NULL, ",");
     speedInKnots = strtok(NULL, ",");
     // return false; // return error false
- }
- else{
-  Serial.println("gpsDataErr");
-  gpsError = true;
-   // return true;  // return error true
- }
-}    
+  }
+  else{
+    Serial.println("gpsDataErr");
+    gpsError = true;
+    // return true;  // return error true
+  }
+}
 
 
-/*
- * Print GPS variables to the serial COM
+/* Print GPS variables to the serial COM
+ * 
  */
 void transmit(){
   delay(1000);
@@ -207,9 +222,9 @@ void transmit(){
 }
 
 
+
 // Sends an AT commands to the SIM5218 and waits for a response with a timeout
 int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout){
-  uint8_t x=0,  answer=0;
   char response[100];
   unsigned long previous;
 
@@ -222,7 +237,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
   Serial.println(ATcommand);    // Send the AT command 
 
 
-    x = 0;
+  int x = 0;
   previous = millis();
 
   // this loop waits for the answer
@@ -243,7 +258,5 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
 
   return answer;
 }
-
-
 
 
