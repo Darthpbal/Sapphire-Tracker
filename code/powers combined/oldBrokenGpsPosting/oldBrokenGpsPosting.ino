@@ -32,7 +32,7 @@ void loop() {
   Serial.println(answer);
   if (answer == 1){
     char* dataString = readGpsData();
-    
+
     Serial.print("dataStr= ");
     Serial.println(dataString);
 
@@ -83,9 +83,11 @@ void switchModulePower(){
 
 
 void configureBoard(){
-  Serial.print("config...");
+  Serial.println("config...");
   // start up the GPS system
-  answer = sendATcommand("AT+CGPS=1,1","OK",1000);    
+  answer = sendATcommand("AT+CGPS=1,1","OK",1000);
+  Serial.print("MainAns= ");
+  Serial.println(answer);
   if (answer == 0)
     {
         // This error check is usually only needed if the module is off at this point
@@ -242,7 +244,7 @@ void parseGpsOrErr(char* gpsData){
 
 
 // Sends an AT commands to the SIM5218 and waits for a response with a timeout
-int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout){
+int sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout){
   char response[100];
   unsigned long previous;
 
@@ -253,6 +255,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
   while( Serial.available() > 0) Serial.read();    // Clean the input buffer
 
   Serial.println(ATcommand);    // Send the AT command 
+  Serial.flush();
 
 
   int x = 0;
@@ -267,16 +270,18 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
       // check if the desired answer is in the response of the module
       if (strstr(response, expected_answer1) != NULL)    
       {
-        Serial.println(response);
+        Serial.println("answered!");
         answer = 1;
-        Serial.print("ans= ");
-        Serial.println(answer);
-        delay(500);
       }
     }
     // Waits for the answer with time out
   }
   while((answer == 0) && ((millis() - previous) < timeout));    
+  Serial.print("response= ");
+  Serial.println(response);
+
+  Serial.print("ans= ");
+  Serial.println(answer);
 
   return answer;
 }

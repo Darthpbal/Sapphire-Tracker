@@ -24,13 +24,13 @@
 
 //Change here your data
 const char pin_number[] = "****";
-const char apn[] = "*********";
-const char user_name[] = "*********";
-const char password[] = "*********";
+const char apn[] = "fast.t-mobile.com";
+const char user_name[] = "";
+const char password[] = "";
 
-char url[ ]="test.libelium.com";
+char url[ ]="gps.rubyride.co";
 int port= 80;
-char request[ ]="GET /test-get-post.php?a=1&b=2 HTTP/1.1\r\nHost: test.libelium.com\r\nContent-Length: 0\r\n\r\n";
+char request[ ]="GET /index.php?a=1&b=2 HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n";
 
 
 int8_t answer;
@@ -56,6 +56,7 @@ void setup(){
   //sets the PIN code
   // sprintf(aux_str, "AT+CPIN=%s", pin_number);
   // sendATcommand(aux_str, "OK", 2000);
+  sendATcommand("AT+CREG=")
 
   delay(3000);
 
@@ -82,166 +83,6 @@ void loop(){
   Serial.println(request);
   // Sends <Ctrl+Z>
   Serial.write(0x1A);
-  http_status = 1;
-
-  while ((http_status == 1) || (http_status == 2))
-  {
-    answer = sendATcommand("", "+CHTTPACT: ", 60000);
-    if (answer == 0)
-    {
-      if (http_status == 1)
-      {
-        http_status = 3;
-      }
-      if (http_status == 2)
-      {
-        http_status = 5;
-      }
-    }
-    else
-    {
-      // answer == 1
-      while(Serial.available()==0);
-      aux_str[0] = Serial.read();
-      
-      if ((aux_str[0] == 'D') && (http_status == 1))
-      {
-        // Data packet with header
-        while(Serial.available()<4);
-        Serial.read();  // A
-        Serial.read();  // T
-        Serial.read();  // A
-        Serial.read();  // ,
-
-        // Reads the packet size
-        x=0;
-        do{
-          while(Serial.available()==0);
-          aux_str[x] = Serial.read();
-          x++;
-        }
-        while((aux_str[x-1] != '\r') && (aux_str[x-1] != '\n'));
-
-        aux_str[x-1] = '\0';
-        data_size = atoi(aux_str);
-
-        // Now, search the end of the HTTP header (\r\n\r\n)
-        do{
-          while (Serial.available() < 3);
-
-          data_size--;
-          if (Serial.read() == '\r')
-          {
-            data_size--;
-            if (Serial.read() == '\n')
-            {
-              data_size--;
-              if (Serial.read() == '\r')
-              {
-                data_size--;
-                if (Serial.read() == '\n')
-                {
-                  // End of the header found
-                  http_status = 2;
-                }
-              }
-            }	
-          }
-        }
-        while ((http_status == 1) && (data_size > 0));
-
-        if (http_status == 2)
-        {
-          // Reads the data
-          http_x = 0;
-          do{
-            if(Serial.available() != 0){
-              data[http_x] = Serial.read();
-              http_x++;
-              data_size--;
-            }
-            else
-            {
-              delay(1);
-            }
-          }
-          while(data_size > 0);
-          data[http_x] = '\0';
-        }
-      }
-      else if ((aux_str[0] == 'D') && (http_status == 2))
-      {
-        // Data packet with header
-        while(Serial.available()<4);
-        Serial.read();  // A
-        Serial.read();  // T
-        Serial.read();  // A
-        Serial.read();  // ,
-
-        // Reads the packet size
-        x=0;
-        do{
-          while(Serial.available()==0);
-          aux_str[x] = Serial.read();
-          x++;
-        }
-        while((aux_str[x-1] != '\r') && (aux_str[x-1] != '\n'));
-
-        aux_str[x-1] = '\0';
-        data_size = atoi(aux_str);
-
-        do{
-          if(Serial.available() != 0){
-            data[http_x] = Serial.read();
-            http_x++;
-          }
-          else
-          {
-            delay(1);
-          }
-        }
-        while(data_size > 0);
-        data[http_x] = '\0';
-
-      }
-      else if (aux_str[0] == '0')
-      {
-        // end of the AT command
-        http_status = 0;
-      }
-      else
-      {
-        // unknow response
-        http_status = 4;
-        Serial.print(char(aux_str[0]));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-        Serial.print(char(Serial.read()));
-      }			
-    }		
-  }
-
-  previous = millis() - previous;
-  
-  Serial.println(previous, DEC);
-  if (http_status == 0)
-  {
-    Serial.print(F("HTTP data: "));
-    Serial.println(data);
-  }
-  else
-  {
-    Serial.print(F("http_status: "));
-    Serial.println(http_status, DEC);
-  }
-
-
-
   delay(10000);
 
 }
@@ -265,6 +106,7 @@ void power_on(){
       answer = sendATcommand("AT", "OK", 2000);
     }
   }
+
 }
 
 
@@ -347,5 +189,3 @@ int8_t sendATcommand2(char* ATcommand, char* expected_answer1, char* expected_an
 
   return answer;
 } 
-
-        
