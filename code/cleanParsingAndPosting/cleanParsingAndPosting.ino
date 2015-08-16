@@ -28,11 +28,19 @@ void loop() {
   gpsError = false;
   delay(5000);
   answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
+  Serial.print("ans= ");
   Serial.println(answer);
   if (answer == 1){
-//    char dataString[60];
     char* dataString = readGpsData();
+    
+    Serial.print("dataStr= ");
+    Serial.println(dataString);
+
     parseGpsOrErr(dataString);
+
+    Serial.print("gpsErr= ");
+    Serial.println(gpsError);
+
     // prints GPS data to serial
     if(!gpsError) transmit();
     // sends GPS data to server
@@ -48,21 +56,22 @@ void loop() {
 
 // Turns cookinghacks module on.
 void switchModulePower(){
-    int onModulePin = 2;        // the pin to switch on the module (without press on button) 
-    pinMode(onModulePin, OUTPUT);
+  Serial.println("switchModulePower");
+    //pin 2 switch on the module (without pressing on-board button) 
+    pinMode(2, OUTPUT);
 
-    digitalWrite(onModulePin,HIGH);
+    digitalWrite(2,HIGH);
     delay(2000);
-    digitalWrite(onModulePin,LOW);
+    digitalWrite(2,LOW);
 
     // checks if the module is started
     answer = sendATcommand("AT", "OK", 2000);
     if (answer == 0)
     {
         // power on pulse
-        digitalWrite(onModulePin,HIGH);
+        digitalWrite(2,HIGH);
         delay(3000);
-        digitalWrite(onModulePin,LOW);
+        digitalWrite(2,LOW);
 
         // waits for an answer from the module
         while(answer == 0){    
@@ -74,6 +83,7 @@ void switchModulePower(){
 
 
 void configureBoard(){
+  Serial.print("config...");
   // start up the GPS system
   answer = sendATcommand("AT+CGPS=1,1","OK",1000);    
   if (answer == 0)
@@ -89,18 +99,21 @@ void configureBoard(){
 
   // set up the wireless network
   while( (sendATcommand("AT+CREG?", "+CREG: 0,1", 500) || sendATcommand("AT+CREG?", "+CREG: 0,5", 500)) == 0 );
-  
+  delay(500);
   // Set APN and IP PDP context
   sendATcommand("AT+CGSOCKCONT=1,\"IP\",\"fast.t-mobile.com\"", "OK", 2000);
-
+  delay(500);
   // Set APN username and password
   sendATcommand("AT+CSOCKAUTH=1,1,\"\",\"\"", "OK", 2000);
+  delay(500);
 }
 
 
 void sendRequest(){
+  Serial.println("sendReq");
   answer = sendATcommand("AT+CHTTPACT=gps.rubyride.co,80", "+CHTTPACT: REQUEST", 60000);
-
+  Serial.print("ans= ");
+  Serial.println(answer);
   // Sends the request
   // Serial.println(request);
 
@@ -161,8 +174,8 @@ char* readGpsData(){
 }
 
 
-/*
- * Parses the GPS string into seperate variables or returns an error.
+/* Parses the GPS string into seperate variables or returns an error.
+ * 
  * This must come right after read gps data function
  * vars used:
  *   latitude
@@ -174,6 +187,7 @@ char* readGpsData(){
  *   knots
  */
 void parseGpsOrErr(char* gpsData){
+  Serial.println("parseGpsOrErr");
   Serial.println(gpsData);
   Serial.println(gpsData[0]);
   if(gpsData[0]!=','){ // Checks if there's data in the GPS string yet.
@@ -255,6 +269,9 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
       {
         Serial.println(response);
         answer = 1;
+        Serial.print("ans= ");
+        Serial.println(answer);
+        delay(500);
       }
     }
     // Waits for the answer with time out
@@ -265,3 +282,11 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
 }
 
 
+int availableMemory()
+{
+  int size = 8192;
+  byte *buf;
+  while ((buf = (byte *) malloc(--size)) == NULL);
+  free(buf);
+  return size;
+} 
