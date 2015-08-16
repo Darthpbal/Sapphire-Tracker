@@ -23,7 +23,8 @@ void loop(){
 	Serial.println(gpsError);
 	if (gpsError == 0)
 	{
-		sendRequest();
+		displayGpsData(gpsData);
+		// sendRequest();
 	}
 	delay(500);
 }
@@ -95,15 +96,15 @@ int readGPS(){
 		gpsData[counter] = '\0';
 		if(gpsData[0] == ',')
 		{
-			Serial.println("No GPS data available");
-			Serial.println("");
+			// Serial.println("No GPS data available");
+			// Serial.println("");
 			return 1;
 		}
 		else
 		{
-			Serial.print("GPS data:");
-			Serial.print(gpsData);  
-			Serial.println("");
+			// Serial.print("GPS data:");
+			// Serial.print(gpsData);  
+			// Serial.println("");
 			return 0;
 		}       
 
@@ -116,7 +117,7 @@ int readGPS(){
 }
 
 
-void displayGpsData(char* gpsData){
+void displayGpsData(char gpsData[]){
   Serial.print("GPS data:");
   Serial.print(gpsData);  
   Serial.println("");
@@ -171,4 +172,38 @@ void sendRequest(){
   // Sends <Ctrl+Z>
   Serial.write(0x1A);
   delay(5000);
+}
+
+/* Parses the GPS string into seperate variables or returns an error.
+ * 
+ * This must come right after read gps data function
+ * vars used:
+ *   latitude
+ *   longitude
+ *   date
+ *   UTC time
+ *   altitude
+ *   speed
+ *   knots
+ */
+void parseGpsOrErr(char gpsData[]){
+  Serial.println("parseGpsOrErr");
+  Serial.println(gpsData);
+  Serial.println(gpsData[0]);
+  if(gpsData[0]!=','){ // Checks if there's data in the GPS string yet.
+    // latitude = strtok(gpsData,",");
+    // northSouth = strtok(NULL, ",");
+    // longitude = strtok(NULL, ",");
+    // eastWest = strtok(NULL, ",");
+    // date = strtok(NULL, ",");
+    // UTC_time = strtok(NULL, ",");
+    // altitude = strtok(NULL, ",");
+    // speedInKnots = strtok(NULL, ",");
+    // return false; // return error false
+  }
+  else{
+    Serial.println("gpsDataErr");
+    gpsError = true;
+    // return true;  // return error true
+  }
 }
