@@ -56,7 +56,7 @@ void setup(){
   //sets the PIN code
   // sprintf(aux_str, "AT+CPIN=%s", pin_number);
   // sendATcommand(aux_str, "OK", 2000);
-  sendATcommand("AT+CREG=")
+  // sendATcommand("AT+CREG=")
 
   delay(3000);
 
