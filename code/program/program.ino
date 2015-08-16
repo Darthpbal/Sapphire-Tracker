@@ -28,6 +28,9 @@ void loop(){
     // displayGpsData(gpsData);
     parseGps(gpsData,latitude);
     delay(1000);
+    // Serial.println(latitude);
+    // delay(1000);
+    Serial.println(availableMemory());
     // sendRequest();
   }
   delay(500);
@@ -192,13 +195,48 @@ void sendRequest(){
 void parseGps(char gpsData[],char latitude[]/*,char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]*/){
   Serial.println("parseGpsOrErr");
   Serial.println(gpsData);
-  Serial.println(gpsData[0]);
-  // latitude = strtok(gpsData,",");
-  // northSouth = strtok(NULL, ",");
-  // longitude = strtok(NULL, ",");
-  // eastWest = strtok(NULL, ",");
-  // date = strtok(NULL, ",");
-  // UTC_time = strtok(NULL, ",");
-  // altitude = strtok(NULL, ",");
-  // speedInKnots = strtok(NULL, ",");
+  int varStep = 0;
+  int varPosition = 0;
+
+  // for (int i = 0; i < sizeof(gpsData)-1; ++i)
+  // {
+  //   if(gpsData[i] == ','){
+  //     latitude[varStep] = '\0';
+  //     varStep = 0;
+  //     varPosition++;
+  //   }
+  //   else{
+  //     switch(varPosition){
+
+  //       // Latitude
+  //       case 0:
+  //         latitude[varStep] = gpsData[i];
+  //         break;
+  //       default:
+  //         delay(100);
+
+  //     }
+  //     varStep++;
+  //   }
+  // }
+  int i = 0;
+  while(gpsData[i] != ','){
+  	latitude[varStep] = gpsData[i];
+  	varStep++;
+  	i++;
+  }
+  latitude[varStep] = '\0';
+
+
+
+  Serial.println(latitude);
 }
+
+int availableMemory()
+{
+  int size = 8192;
+  byte *buf;
+  while ((buf = (byte *) malloc(--size)) == NULL);
+  free(buf);
+  return size;
+} 
