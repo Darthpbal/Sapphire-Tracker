@@ -20,6 +20,7 @@ void setup() {
 
   switchModulePower();                    // switches the module ON
   delay(3000);
+  configureBoard();
 } 
 
 
@@ -27,14 +28,15 @@ void loop() {
   gpsError = false;
   delay(5000);
   answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
-
+  Serial.println(answer);
   if (answer == 1){
-    char dataString = readGpsData();
-    parseGpsOrErr(gpsData);
+//    char dataString[60];
+    char* dataString = readGpsData();
+    parseGpsOrErr(dataString);
     // prints GPS data to serial
     if(!gpsError) transmit();
     // sends GPS data to server
-    // if(!gpsError) sendRequest();
+    if(!gpsError) sendRequest();
   }
   else{
     Serial.println("module err");
@@ -71,7 +73,7 @@ void switchModulePower(){
 }
 
 
-void config(){
+void configureBoard(){
   // start up the GPS system
   answer = sendATcommand("AT+CGPS=1,1","OK",1000);    
   if (answer == 0)
@@ -133,8 +135,8 @@ void sendRequest(){
   Serial.print(altitude);
   Serial.print("&");
   
-  Serial.print("speed_OG=");
-  Serial.print(speed_OG);
+  Serial.print("speedInKnots=");
+  Serial.print(speedInKnots);
   Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
 
   // Sends <Ctrl+Z>
@@ -144,8 +146,8 @@ void sendRequest(){
 
 //reads GPS data and stores it in char array
 // parse gps must come after
-char readGpsData(){
-  char gpsData[60]; 
+char* readGpsData(){
+  char gpsData[60];
   int counter = 0;
   counter = 0;
   do{
@@ -172,6 +174,8 @@ char readGpsData(){
  *   knots
  */
 void parseGpsOrErr(char* gpsData){
+  Serial.println(gpsData);
+  Serial.println(gpsData[0]);
   if(gpsData[0]!=','){ // Checks if there's data in the GPS string yet.
     latitude = strtok(gpsData,",");
     northSouth = strtok(NULL, ",");
@@ -194,32 +198,32 @@ void parseGpsOrErr(char* gpsData){
 /* Print GPS variables to the serial COM
  * 
  */
-void transmit(){
-  delay(1000);
-  Serial.print("latitude : ");
-  Serial.println(latitude); 
-  delay(1000);
-  Serial.print("northSouth : ");
-  Serial.println(northSouth); 
-  delay(1000);
-  Serial.print("longitude : ");
-  Serial.println(longitude); 
-  delay(1000);
-  Serial.print("eastWest : ");
-  Serial.println(eastWest); 
-  delay(1000);
-  Serial.print("date : ");
-  Serial.println(date); 
-  delay(1000);
-  Serial.print("UTC_time : ");
-  Serial.println(UTC_time); 
-  delay(1000);
-  Serial.print("speedInKnots : ");
-  Serial.println(speedInKnots);
-  delay(1000);
-  Serial.println();
-  Serial.println();
-}
+ void transmit(){
+   delay(1000);
+   Serial.print("latitude : ");
+   Serial.println(latitude); 
+   delay(1000);
+   Serial.print("northSouth : ");
+   Serial.println(northSouth); 
+   delay(1000);
+   Serial.print("longitude : ");
+   Serial.println(longitude); 
+   delay(1000);
+   Serial.print("eastWest : ");
+   Serial.println(eastWest); 
+   delay(1000);
+   Serial.print("date : ");
+   Serial.println(date); 
+   delay(1000);
+   Serial.print("UTC_time : ");
+   Serial.println(UTC_time); 
+   delay(1000);
+   Serial.print("speedInKnots : ");
+   Serial.println(speedInKnots);
+   delay(1000);
+   Serial.println();
+   Serial.println();
+ }
 
 
 
@@ -249,6 +253,7 @@ int8_t sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeo
       // check if the desired answer is in the response of the module
       if (strstr(response, expected_answer1) != NULL)    
       {
+        Serial.println(response);
         answer = 1;
       }
     }
