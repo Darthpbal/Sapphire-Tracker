@@ -17,16 +17,20 @@ void setup(){
 }
 
 
-void loop(){	
-	gpsError = readGPS();
-	Serial.print("gpsError= ");
-	Serial.println(gpsError);
-	if (gpsError == 0)
-	{
-		displayGpsData(gpsData);
-		// sendRequest();
-	}
-	delay(500);
+void loop(){
+  //pos:   1      2       3       4   5   6     7     8
+  char latitude[13],northSouth[2],longitude[13],eastWest[2],date[7],UTC_time[9],altitude[7],speedInKnots[7];
+  gpsError = readGPS();
+  Serial.print("gpsError= ");
+  Serial.println(gpsError);
+  if (gpsError == 0)
+  {
+    // displayGpsData(gpsData);
+    parseGps(gpsData,latitude);
+    delay(1000);
+    // sendRequest();
+  }
+  delay(500);
 }
 
 
@@ -83,37 +87,37 @@ void configure(){
 
 
 int readGPS(){
-	answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
-	if (answer == 1){
+  answer = sendATcommand("AT+CGPSINFO","+CGPSINFO:",1000);    // request info from GPS
+  if (answer == 1){
 
-		counter = 0;
-		do{
-			while(Serial.available() == 0);
-			gpsData[counter] = Serial.read();
-			counter++;
-		}
-		while(gpsData[counter - 1] != '\r');
-		gpsData[counter] = '\0';
-		if(gpsData[0] == ',')
-		{
-			// Serial.println("No GPS data available");
-			// Serial.println("");
-			return 1;
-		}
-		else
-		{
-			// Serial.print("GPS data:");
-			// Serial.print(gpsData);  
-			// Serial.println("");
-			return 0;
-		}       
+    counter = 0;
+    do{
+      while(Serial.available() == 0);
+      gpsData[counter] = Serial.read();
+      counter++;
+    }
+    while(gpsData[counter - 1] != '\r');
+    gpsData[counter] = '\0';
+    if(gpsData[0] == ',')
+    {
+      // Serial.println("No GPS data available");
+      // Serial.println("");
+      return 1;
+    }
+    else
+    {
+      // Serial.print("GPS data:");
+      // Serial.print(gpsData);  
+      // Serial.println("");
+      return 0;
+    }       
 
-	}
-	else
-	{
-		Serial.println("noGpsAns");
-		return 1;
-	}
+  }
+  else
+  {
+    Serial.println("noGpsAns");
+    return 1;
+  }
 }
 
 
@@ -121,7 +125,6 @@ void displayGpsData(char gpsData[]){
   Serial.print("GPS data:");
   Serial.print(gpsData);  
   Serial.println("");
-  delay(1000);
 }
 
 
@@ -186,24 +189,16 @@ void sendRequest(){
  *   speed
  *   knots
  */
-void parseGpsOrErr(char gpsData[]){
+void parseGps(char gpsData[],char latitude[]/*,char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]*/){
   Serial.println("parseGpsOrErr");
   Serial.println(gpsData);
   Serial.println(gpsData[0]);
-  if(gpsData[0]!=','){ // Checks if there's data in the GPS string yet.
-    // latitude = strtok(gpsData,",");
-    // northSouth = strtok(NULL, ",");
-    // longitude = strtok(NULL, ",");
-    // eastWest = strtok(NULL, ",");
-    // date = strtok(NULL, ",");
-    // UTC_time = strtok(NULL, ",");
-    // altitude = strtok(NULL, ",");
-    // speedInKnots = strtok(NULL, ",");
-    // return false; // return error false
-  }
-  else{
-    Serial.println("gpsDataErr");
-    gpsError = true;
-    // return true;  // return error true
-  }
+  // latitude = strtok(gpsData,",");
+  // northSouth = strtok(NULL, ",");
+  // longitude = strtok(NULL, ",");
+  // eastWest = strtok(NULL, ",");
+  // date = strtok(NULL, ",");
+  // UTC_time = strtok(NULL, ",");
+  // altitude = strtok(NULL, ",");
+  // speedInKnots = strtok(NULL, ",");
 }
