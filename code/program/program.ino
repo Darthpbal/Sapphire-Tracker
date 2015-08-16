@@ -29,8 +29,8 @@ void loop(){
     parseGps(gpsData,latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
     delay(1000);
     
-    displayGpsData(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
-    // sendRequest();
+    // displayGpsData(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
+    sendRequest(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
   }
   delay(500);
 }
@@ -185,11 +185,31 @@ int sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout)
 }
 
 
-void sendRequest(){
-  char request[ ]="GET /index.php?a=1&b=2 HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n";
+void sendRequest(char latitude[],char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]){
+  // char request[ ]="GET /index.php?a=1&b=2 HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n";
   answer = sendATcommand("AT+CHTTPACT=\"gps.rubyride.co\",80", "+CHTTPACT: REQUEST", 60000);
   // Sends the request
-  Serial.println(request);
+  // Serial.println(request);
+  Serial.print("GET /index.php?");
+  Serial.print("latitude=");
+  Serial.print(latitude);
+  Serial.print("&northSouth=");
+  Serial.print(northSouth);
+  Serial.print("&longitude=");
+  Serial.print(longitude);
+  Serial.print("&eastWest=");
+  Serial.print(eastWest);
+  Serial.print("&date=");
+  Serial.print(date);
+  Serial.print("&utc_time=");
+  Serial.print(UTC_time);
+  Serial.print("&altitude=");
+  Serial.print(altitude);
+  Serial.print("&speedInKnots=");
+  Serial.print(speedInKnots);
+
+  Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
+
   // Sends <Ctrl+Z>
   Serial.write(0x1A);
   delay(5000);
