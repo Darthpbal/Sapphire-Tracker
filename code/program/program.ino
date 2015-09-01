@@ -28,7 +28,7 @@ void loop(){
     // displayGpsData(gpsData);
     parseGps(gpsData,latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
     delay(1000);
-    
+
     // displayGpsData(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
     sendRequest(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
   }
@@ -78,9 +78,9 @@ void configure(){
   // Sets user name and password
   sendATcommand("AT+CSOCKAUTH=1,1,\"\",\"\"", "OK", 2000);
   delay(500);
-  answer = sendATcommand("AT+CGPS=1,1","OK",1000);    
+  answer = sendATcommand("AT+CGPS=1,1","OK",1000);
   if (answer == 0)
-  {   
+  {
     Serial.println("Error starting the GPS");
     Serial.println("The code stucks here!!");
     while(1);
@@ -109,10 +109,10 @@ int readGPS(){
     else
     {
       // Serial.print("GPS data:");
-      // Serial.print(gpsData);  
+      // Serial.print(gpsData);
       // Serial.println("");
       return 0;
-    }       
+    }
 
   }
   else
@@ -125,7 +125,7 @@ int readGPS(){
 
 void displayGpsData(char latitude[],char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]){
   // Serial.print("GPS data:");
-  // Serial.print(gpsData);  
+  // Serial.print(gpsData);
   // Serial.println("");
 	Serial.print("latitude= ");
 	Serial.println(latitude);
@@ -207,6 +207,8 @@ void sendRequest(char latitude[],char northSouth[],char longitude[],char eastWes
   Serial.print(altitude);
   Serial.print("&speedInKnots=");
   Serial.print(speedInKnots);
+  Serial.print("&unitSerialNum=");
+  Serial.print("MP0614521074662");
 
   Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
 
@@ -216,7 +218,7 @@ void sendRequest(char latitude[],char northSouth[],char longitude[],char eastWes
 }
 
 /* Parses the GPS string into seperate variables or returns an error.
- * 
+ *
  * This must come right after read gps data function
  * vars used:
  *   latitude
@@ -305,4 +307,4 @@ int availableMemory()
   while ((buf = (byte *) malloc(--size)) == NULL);
   free(buf);
   return size;
-} 
+}
