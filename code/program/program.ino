@@ -9,6 +9,9 @@ int counter;
 void setup(){
   Serial.begin(115200);
   Serial.println("init");
+  pinMode(10, OUTPUT);// RED gps error 1
+  pinMode(11, OUTPUT);// GREEN gps error 0
+  pinMode(9, OUTPUT); // Yellow Transmitting indication
 
   powerOn();
   delay(2000);
@@ -18,19 +21,25 @@ void setup(){
 
 
 void loop(){
+  digitalWrite(10, LOW);
+  digitalWrite(11, LOW);
+  delay(250);
   //pos:   1      2       3       4   5   6     7     8
   char latitude[13],northSouth[2],longitude[13],eastWest[2],date[7],UTC_time[9],altitude[7],speedInKnots[7];
   gpsError = readGPS();
-  Serial.print("gpsError= ");
-  Serial.println(gpsError);
+  // Serial.print("gpsError= ");
+  // Serial.println(gpsError);
   if (gpsError == 0)
   {
+    digitalWrite(11, HIGH);
     // displayGpsData(gpsData);
     parseGps(gpsData,latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
     delay(1000);
 
     // displayGpsData(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
     sendRequest(latitude,northSouth,longitude,eastWest,date,UTC_time,altitude,speedInKnots);
+  }else{
+    digitalWrite(10, HIGH);
   }
   delay(500);
 }
@@ -123,27 +132,27 @@ int readGPS(){
 }
 
 
-void displayGpsData(char latitude[],char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]){
-  // Serial.print("GPS data:");
-  // Serial.print(gpsData);
-  // Serial.println("");
-	Serial.print("latitude= ");
-	Serial.println(latitude);
-	Serial.print("northSouth= ");
-	Serial.println(northSouth);
-	Serial.print("longitude= ");
-	Serial.println(longitude);
-	Serial.print("eastWest= ");
-	Serial.println(eastWest);
-	Serial.print("date= ");
-	Serial.println(date);
-	Serial.print("UTC_time= ");
-	Serial.println(UTC_time);
-	Serial.print("altitude= ");
-	Serial.println(altitude);
-	Serial.print("speedInKnots= ");
-	Serial.println(speedInKnots);
-}
+// void displayGpsData(char latitude[],char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]){
+//   // Serial.print("GPS data:");
+//   // Serial.print(gpsData);
+//   // Serial.println("");
+// 	Serial.print("latitude= ");
+// 	Serial.println(latitude);
+// 	Serial.print("northSouth= ");
+// 	Serial.println(northSouth);
+// 	Serial.print("longitude= ");
+// 	Serial.println(longitude);
+// 	Serial.print("eastWest= ");
+// 	Serial.println(eastWest);
+// 	Serial.print("date= ");
+// 	Serial.println(date);
+// 	Serial.print("UTC_time= ");
+// 	Serial.println(UTC_time);
+// 	Serial.print("altitude= ");
+// 	Serial.println(altitude);
+// 	Serial.print("speedInKnots= ");
+// 	Serial.println(speedInKnots);
+// }
 
 
 int sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout) {
@@ -186,35 +195,42 @@ int sendATcommand(char* ATcommand, char* expected_answer1, unsigned int timeout)
 
 
 void sendRequest(char latitude[],char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]){
+  digitalWrite(9, HIGH);
+  digitalWrite(11, LOW);
+
   // char request[ ]="GET /index.php?a=1&b=2 HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n";
-  answer = sendATcommand("AT+CHTTPACT=\"gps.rubyride.co\",80", "+CHTTPACT: REQUEST", 60000);
-  // Sends the request
-  // Serial.println(request);
-  Serial.print("GET /index.php?");
-  Serial.print("latitude=");
-  Serial.print(latitude);
-  Serial.print("&northSouth=");
-  Serial.print(northSouth);
-  Serial.print("&longitude=");
-  Serial.print(longitude);
-  Serial.print("&eastWest=");
-  Serial.print(eastWest);
-  Serial.print("&date=");
-  Serial.print(date);
-  Serial.print("&utc_time=");
-  Serial.print(UTC_time);
-  Serial.print("&altitude=");
-  Serial.print(altitude);
-  Serial.print("&speedInKnots=");
-  Serial.print(speedInKnots);
-  Serial.print("&unitSerialNum=");
-  Serial.print("MP0614521074662");
+  answer = sendATcommand("AT+CHTTPACT=\"gps.rubyride.co\",80", "+CHTTPACT: REQUEST", 16000);
+  if(answer){
+    // Sends the request
+    // Serial.println(request);
+    Serial.print("GET /index.php?latitude=");
+    Serial.print(latitude);
+    Serial.print("&northSouth=");
+    Serial.print(northSouth);
+    Serial.print("&longitude=");
+    Serial.print(longitude);
+    Serial.print("&eastWest=");
+    Serial.print(eastWest);
+    Serial.print("&date=");
+    Serial.print(date);
+    Serial.print("&utc_time=");
+    Serial.print(UTC_time);
+    Serial.print("&altitude=");
+    Serial.print(altitude);
+    Serial.print("&speedInKnots=");
+    Serial.print(speedInKnots);
+    Serial.print("&unitSerialNum=MP0614521074662 HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
 
-  Serial.print(" HTTP/1.1\r\nHost: gps.rubyride.co\r\nContent-Length: 0\r\n\r\n");
-
-  // Sends <Ctrl+Z>
-  Serial.write(0x1A);
-  delay(5000);
+    // Sends <Ctrl+Z>
+    Serial.write(0x1A);
+    for(int i = 0; i < 5 ; i++){
+      digitalWrite(9, LOW);
+      delay(150);
+      digitalWrite(9, HIGH);
+      delay(150);
+    }
+  }
+  digitalWrite(9, LOW);
 }
 
 /* Parses the GPS string into seperate variables or returns an error.
@@ -230,8 +246,8 @@ void sendRequest(char latitude[],char northSouth[],char longitude[],char eastWes
  *   knots
  */
 void parseGps(char gpsData[],char latitude[],char northSouth[],char longitude[],char eastWest[],char date[],char UTC_time[],char altitude[],char speedInKnots[]){
-  Serial.println("parseGpsOrErr");
-  Serial.println(gpsData);
+  // Serial.println("parseGpsOrErr");
+  // Serial.println(gpsData);
   int varStep = 0;
   int varPosition = 0;
   int i = 0;
@@ -300,11 +316,11 @@ void parseGps(char gpsData[],char latitude[],char northSouth[],char longitude[],
   speedInKnots[varStep] = '\0';
 }
 
-int availableMemory()
-{
-  int size = 8192;
-  byte *buf;
-  while ((buf = (byte *) malloc(--size)) == NULL);
-  free(buf);
-  return size;
-}
+// int availableMemory()
+// {
+//   int size = 8192;
+//   byte *buf;
+//   while ((buf = (byte *) malloc(--size)) == NULL);
+//   free(buf);
+//   return size;
+// }
